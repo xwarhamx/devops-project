@@ -4,28 +4,27 @@ services:
   app:
     build: ./app
     container_name: app
+    environment:
+      DB_HOST: db
+      DB_NAME: mydb
+      DB_USER: user
+      DB_PASSWORD: pass
     depends_on:
       - db
     networks:
       - mynet
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000"]
-      interval: 5s
-      retries: 5
 
   db:
-      
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user"]
+      test:["CMD-SHELL", "pg_isready -U user"]
       interval: 5s
       retries: 5
-      image: postgres:15
+    image: postgres:15
     container_name: db
     environment:
-          DB_HOST: db
-          DB_NAME: mydb
-          DB_USER: user
-          DB_PASSWORD: pass
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
@@ -43,11 +42,10 @@ services:
     networks:
       - mynet
 
-  env_file:
-    - .env
-
 networks:
   mynet:
 
 volumes:
   db_data:
+
+restart: always
