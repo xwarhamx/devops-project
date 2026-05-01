@@ -19,3 +19,10 @@ jobs:
 
       - name: Push
         run: docker push "${{ secrets.DOCKER_USERNAME }}/myapp:latest"
+      - name: Deploy
+        run: |
+            ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
+            cd devops-project &&
+            git pull &&
+            docker compose up -d --build
+        
