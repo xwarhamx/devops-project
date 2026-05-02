@@ -13,10 +13,11 @@ services:
       - db
     networks:
       - mynet
+    restart: always
 
   db:
     healthcheck:
-      test:["CMD-SHELL", "pg_isready -U user"]
+      test: ["CMD-SHELL", "pg_isready -U user"]
       interval: 5s
       retries: 5
     image: postgres:15
@@ -29,6 +30,7 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - mynet
+    restart: always
 
   nginx:
     image: nginx:latest
@@ -41,6 +43,7 @@ services:
       - app
     networks:
       - mynet
+    restart: always
 
 networks:
   mynet:
@@ -48,4 +51,3 @@ networks:
 volumes:
   db_data:
 
-restart: always
