@@ -15,7 +15,7 @@ jobs:
 
       - name: Deploy app
         run: |
-          cd /root/devops-project
+          cd /home/githubrunner/devops-project
           git pull
           docker-compose down
           docker-compose up -d --build
